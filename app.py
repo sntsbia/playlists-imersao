@@ -1,22 +1,18 @@
 from fastapi import FastAPI
 from database import engine, Base
-from routers.alunos import alunos_router
-from routers.cursos import cursos_router
-from routers.matriculas import matriculas_router
+from routers.playlists import playlists_router
 
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="API de Gestão Escolar", 
+    title="API de Playlists", 
     description="""
-        Esta API fornece endpoints para gerenciar alunos, cursos e turmas, em uma instituição de ensino.  
+        Esta API fornece endpoints para gerenciar playlists.  
         
-        Permite realizar diferentes operações em cada uma dessas entidades.
+        Permite realizar diferentes operações na entidade.
     """, 
     version="1.0.0",
 )
 
-app.include_router(alunos_router, tags=["alunos"])
-app.include_router(cursos_router, tags=["cursos"])
-app.include_router(matriculas_router, tags=["matriculas"])
+app.include_router(playlists_router, tags=["playlists"])

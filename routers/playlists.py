@@ -1,146 +1,100 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Union
-from schemas import Aluno
-from models import Aluno as ModelAluno
+from schemas import Playlist
+from models import Playlist as ModelPlaylist
 from database import get_db
 
-alunos_router = APIRouter()
+playlists_router = APIRouter()
 
-@alunos_router.get("/alunos", response_model=List[Aluno])
-def read_alunos(db: Session = Depends(get_db)):
+@playlists_router.get("/playlists", response_model=List[Playlist])
+def read_playlists(db: Session = Depends(get_db)):
     """
-    Retorna uma lista de todos os alunos cadastrados.
+    Retorna uma lista de todos os playlists cadastrados.
 
     """
-    alunos = db.query(ModelAluno).all()
-    return [Aluno.from_orm(aluno) for aluno in alunos]
+    playlists = db.query(ModelPlaylist).all()
+    return [Playlist.from_orm(playlist) for playlist in playlists]
 
-@alunos_router.get("/alunos/{aluno_id}", response_model=Aluno)
-def read_aluno(aluno_id: int, db: Session = Depends(get_db)):
+@playlists_router.get("/playlists/{playlist_id}", response_model=Playlist)
+def read_playlist(playlist_id: int, db: Session = Depends(get_db)):
     """
-    Retorna os detalhes de um aluno específico com base no ID fornecido.
+    Retorna os detalhes de um playlist específico com base no ID fornecido.
 
     Args:
-        aluno_id: O ID do aluno.
+        playlist_id: O ID do playlist.
 
     Raises:
-        HTTPException: Se o aluno não for encontrado.
+        HTTPException: Se o playlist não for encontrado.
     """
-    db_aluno = db.query(ModelAluno).filter(ModelAluno.id == aluno_id).first()
-    if db_aluno is None:
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
-    return Aluno.from_orm(db_aluno)
+    db_playlist = db.query(ModelPlaylist).filter(ModelPlaylist.id == playlist_id).first()
+    if db_playlist is None:
+        raise HTTPException(status_code=404, detail="Playlist não encontrado")
+    return Playlist.from_orm(db_playlist)
 
-@alunos_router.post("/alunos", response_model=Aluno)
-def create_aluno(aluno: Aluno, db: Session = Depends(get_db)):
+@playlists_router.post("/playlists", response_model=Playlist)
+def create_playlist(playlist: Playlist, db: Session = Depends(get_db)):
     """
-    Cria um novo aluno com os dados fornecidos.
+    Cria um novo playlist com os dados fornecidos.
 
     Args:
-        aluno: Dados do aluno a ser criado.
+        playlist: Dados do playlist a ser criado.
 
     Returns:
-        Aluno: aluno criado.
+        Playlist: playlist criado.
     """ 
-    db_aluno = ModelAluno(**aluno.dict(exclude={"id"})) 
-    db.add(db_aluno)
+    db_playlist = ModelPlaylist(**playlist.dict(exclude={"id"})) 
+    db.add(db_playlist)
     db.commit()
-    db.refresh(db_aluno)
-    return Aluno.from_orm(db_aluno)
+    db.refresh(db_playlist)
+    return Playlist.from_orm(db_playlist)
 
-@alunos_router.put("/alunos/{aluno_id}", response_model=Aluno)
-def update_aluno(aluno_id: int, aluno: Aluno, db: Session = Depends(get_db)):
+@playlists_router.put("/playlists/{playlist_id}", response_model=Playlist)
+def update_playlist(playlist_id: int, playlist: Playlist, db: Session = Depends(get_db)):
     """
-    Atualiza os dados de um aluno existente.
+    Atualiza os dados de um playlist existente.
 
     Args:
-        aluno_id: O ID do aluno a ser atualizado.
-        aluno: Os novos dados do aluno.
+        playlist_id: O ID do playlist a ser atualizado.
+        playlist: Os novos dados do playlist.
 
     Raises:
-        HTTPException: 404 - Aluno não encontrado.
+        HTTPException: 404 - Playlist não encontrado.
 
     Returns:
-        Aluno: O aluno atualizado.
+        Playlist: O playlist atualizado.
     """
-    db_aluno = db.query(ModelAluno).filter(ModelAluno.id == aluno_id).first()
-    if db_aluno is None:
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    db_playlist = db.query(ModelPlaylist).filter(ModelPlaylist.id == playlist_id).first()
+    if db_playlist is None:
+        raise HTTPException(status_code=404, detail="Playlist não encontrado")
 
-    for key, value in aluno.dict(exclude_unset=True).items():
-        setattr(db_aluno, key, value)
+    for key, value in playlist.dict(exclude_unset=True).items():
+        setattr(db_playlist, key, value)
 
     db.commit()
-    db.refresh(db_aluno)
-    return Aluno.from_orm(db_aluno)
+    db.refresh(db_playlist)
+    return Playlist.from_orm(db_playlist)
 
-@alunos_router.delete("/alunos/{aluno_id}", response_model=Aluno)
-def delete_aluno(aluno_id: int, db: Session = Depends(get_db)):
+@playlists_router.delete("/playlists/{playlist_id}", response_model=Playlist)
+def delete_playlist(playlist_id: int, db: Session = Depends(get_db)):
     """
-    Exclui um aluno.
+    Exclui um playlist.
 
     Args:
-        aluno_id: O ID do aluno a ser excluído.
+        playlist_id: O ID do playlist a ser excluído.
 
     Raises:
-        HTTPException: 404 - Aluno não encontrado.
+        HTTPException: 404 - Playlist não encontrado.
 
     Returns:
-        Aluno: O aluno excluído.
+        Playlist: O playlist excluído.
     """
-    db_aluno = db.query(ModelAluno).filter(ModelAluno.id == aluno_id).first()
-    if db_aluno is None:
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    db_playlist = db.query(ModelPlaylist).filter(ModelPlaylist.id == playlist_id).first()
+    if db_playlist is None:
+        raise HTTPException(status_code=404, detail="Playlist não encontrado")
 
-    aluno_deletado = Aluno.from_orm(db_aluno)
+    playlist_deletado = Playlist.from_orm(db_playlist)
 
-    db.delete(db_aluno)
+    db.delete(db_playlist)
     db.commit()
-    return aluno_deletado
-
-@alunos_router.get("/alunos/nome/{nome_aluno}", response_model=Union[Aluno, List[Aluno]]) 
-def read_aluno_por_nome(nome_aluno: str, db: Session = Depends(get_db)):
-    """
-    Busca alunos pelo nome (parcial ou completo).
-    
-    Args:
-        nome_aluno: O nome (ou parte do nome) do aluno a ser buscado.
-    
-    Raises:
-        HTTPException: 404 - Nenhum aluno encontrado com esse nome.
-        
-    Returns:
-        Union[Aluno, List[Aluno]]: Um único objeto `Aluno` se houver apenas uma correspondência, 
-        ou uma lista de `Aluno` se houver várias correspondências.
-    """
-    db_alunos = db.query(ModelAluno).filter(ModelAluno.nome.ilike(f"%{nome_aluno}%")).all() # ilike para case-insensitive
-
-    if not db_alunos:
-        raise HTTPException(status_code=404, detail="Nenhum aluno encontrado com esse nome")
-
-    if len(db_alunos) == 1:  # Retorna um único Aluno se houver apenas uma correspondência
-        return Aluno.from_orm(db_alunos[0])
-
-    return [Aluno.from_orm(aluno) for aluno in db_alunos]
-
-@alunos_router.get("/alunos/email/{email_aluno}", response_model=Aluno)
-def read_aluno_por_email(email_aluno: str, db: Session = Depends(get_db)):
-    """
-    Busca um aluno pelo email.
-
-    Args:
-        email_aluno: O email do aluno a ser buscado.
-        
-    Raises:
-         HTTPException: 404 - Nenhum aluno encontrado com esse email.
-
-    Returns:
-        Aluno: O aluno encontrado.
-    """
-    db_aluno = db.query(ModelAluno).filter(ModelAluno.email == email_aluno).first()
-
-    if db_aluno is None:
-        raise HTTPException(status_code=404, detail="Nenhum aluno encontrado com esse email")
-    
-    return Aluno.from_orm(db_aluno)
+    return playlist_deletado
