@@ -1,17 +1,19 @@
-# Imersão DevOps - Alura Google Cloud
+# API de Playlists - Imersão DevOps Alura & Google Cloud
 
-Este projeto é uma API desenvolvida com FastAPI para gerenciar alunos, cursos e matrículas em uma instituição de ensino.
+Este projeto é uma API desenvolvida com FastAPI para gerenciar uma coleção de playlists musicais.
 
 ## Pré-requisitos
 
 - [Python 3.10 ou superior instalado](https://www.python.org/downloads/)
 - [Git](https://git-scm.com/downloads)
-- [Docker](https://www.docker.com/get-started/)
 
 ## Passos para subir o projeto
 
-1. **Faça o download do repositório:**
-   [Clique aqui para realizar o download](https://github.com/guilhermeonrails/imersao-devops/archive/refs/heads/main.zip)
+1. **Clone o repositório:**
+   ```sh
+   git clone https://github.com/sntsbia/playlists-imersao.git
+   cd playlists-imersao
+   ```
 
 2. **Crie um ambiente virtual:**
    ```sh
@@ -38,8 +40,13 @@ Este projeto é uma API desenvolvida com FastAPI para gerenciar alunos, cursos e
    ```
 
 5. **Execute a aplicação:**
+   - Para acesso **local** (apenas na sua máquina):
    ```sh
    uvicorn app:app --reload
+   ```
+   - Para acesso **pela rede** (outros dispositivos na mesma rede Wi-Fi/cabeada):
+   ```sh
+   uvicorn app:app --reload --host 0.0.0.0
    ```
 
 6. **Acesse a documentação interativa:**
@@ -54,15 +61,15 @@ Este projeto é uma API desenvolvida com FastAPI para gerenciar alunos, cursos e
 ## Estrutura do Projeto
 
 - `app.py`: Arquivo principal da aplicação FastAPI.
-- `models.py`: Modelos do banco de dados (SQLAlchemy).
-- `schemas.py`: Schemas de validação (Pydantic).
+- `models.py`: Modelo da tabela `playlists` (SQLAlchemy).
+- `schemas.py`: Schemas de validação de dados para playlists (Pydantic).
 - `database.py`: Configuração do banco de dados SQLite.
-- `routers/`: Diretório com os arquivos de rotas (alunos, cursos, matrículas).
+- `routers/playlists.py`: Arquivo com as rotas (endpoints) para o CRUD de playlists.
 - `requirements.txt`: Lista de dependências do projeto.
 
 ---
 
-- O banco de dados SQLite será criado automaticamente como `escola.db` na primeira execução.
-- Para reiniciar o banco, basta apagar o arquivo `escola.db` (isso apagará todos os dados).
+- O banco de dados SQLite será criado automaticamente como `playlist.db` na primeira execução.
+- Para reiniciar o banco, basta apagar o arquivo `playlist.db` (isso apagará todos os dados).
 
 ---

@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from database import engine, Base
 from routers.playlists import playlists_router
 
-
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
