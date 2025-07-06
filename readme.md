@@ -33,13 +33,18 @@ Este projeto é uma API desenvolvida com FastAPI para gerenciar uma coleção de
      ```sh
      venv\Scripts\activate
      ```
+   
+   Para desativar o ambiente virtual a qualquer momento, basta executar o comando:
+   ```sh
+   deactivate
+   ```
 
-4. **Instale as dependências:**
+5. **Instale as dependências:**
    ```sh
    pip install -r requirements.txt
    ```
 
-5. **Execute a aplicação:**
+6. **Execute a aplicação:**
    - Para acesso **local** (apenas na sua máquina):
    ```sh
    uvicorn app:app --reload
@@ -49,7 +54,7 @@ Este projeto é uma API desenvolvida com FastAPI para gerenciar uma coleção de
    uvicorn app:app --reload --host 0.0.0.0
    ```
 
-6. **Acesse a documentação interativa:**
+7. **Acesse a documentação interativa:**
 
    Abra o navegador e acesse:  
    [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
