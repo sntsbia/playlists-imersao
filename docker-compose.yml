@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  api:
+    # Constrói a imagem a partir do Dockerfile no diretório atual
+    build: .
+    container_name: api-imersao
+    # Mapeia a porta 8000 do seu computador para a porta 8000 do contêiner
+    ports:
+      - "8000:8000"
+    # Monta o diretório atual do projeto dentro do contêiner em /app
+    # Isso permite que as alterações no código sejam refletidas instantaneamente (hot-reload)
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1  # Garante que o log seja exibido em tempo real
+
