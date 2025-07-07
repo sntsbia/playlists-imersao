@@ -1,80 +1,76 @@
-# API de Playlists - Imersão DevOps Alura & Google Cloud
+# playlists-imersao
 
-Este projeto é uma API desenvolvida com FastAPI para gerenciar uma coleção de playlists musicais.
+Este projeto é uma adaptação da aula de Imersão CloudDevOps da Alura em parceria com o Google, com o objetivo de demonstrar o processo de containerização e publicação de um banco de dados para utilização em outros projetos.
+
+## Sobre
+
+O repositório contém scripts e configurações para subir um banco de dados em ambiente Docker, facilitando o uso e integração com aplicações externas. O foco é a praticidade para desenvolvimento, testes e integração contínua, sem depender de infraestrutura externa.
 
 ## Pré-requisitos
 
-- [Python 3.10 ou superior instalado](https://www.python.org/downloads/)
-- [Git](https://git-scm.com/downloads)
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Passos para subir o projeto
+## Como rodar o projeto
 
-1. **Clone o repositório:**
-   ```sh
+### Usando Docker Compose
+
+1. Clone o repositório:
+
+   ```bash
    git clone https://github.com/sntsbia/playlists-imersao.git
    cd playlists-imersao
    ```
 
-2. **Crie um ambiente virtual:**
-   ```sh
-   python3 -m venv ./venv
+2. Suba os containers com Docker Compose:
+
+   ```bash
+   docker-compose up -d
    ```
 
-3. **Ative o ambiente virtual:**
-   - No Linux/Mac:
-     ```sh
-     source venv/bin/activate
-     ```
-   - No Windows, abra um terminal no modo administrador e execute o comando:
-   ```sh
-   Set-ExecutionPolicy RemoteSigned
+   Isso irá criar e iniciar todos os serviços definidos no arquivo `docker-compose.yml`.
+
+3. Para acompanhar os logs dos containers:
+
+   ```bash
+   docker-compose logs -f
    ```
 
-     ```sh
-     venv\Scripts\activate
-     ```
-   
-   Para desativar o ambiente virtual a qualquer momento, basta executar o comando:
-   ```sh
-   deactivate
+4. Para parar e remover os containers, redes e volumes criados pelo Compose:
+
+   ```bash
+   docker-compose down
    ```
 
-5. **Instale as dependências:**
-   ```sh
-   pip install -r requirements.txt
-   ```
+### Usando apenas Docker
 
-6. **Execute a aplicação:**
-   - Para acesso **local** (apenas na sua máquina):
-   ```sh
-   uvicorn app:app --reload
-   ```
-   - Para acesso **pela rede** (outros dispositivos na mesma rede Wi-Fi/cabeada):
-   ```sh
-   uvicorn app:app --reload --host 0.0.0.0
-   ```
+Se preferir rodar o banco de dados manualmente, utilize os comandos abaixo (ajuste conforme a imagem e configurações do seu banco):
 
-7. **Acesse a documentação interativa:**
+```bash
+docker build -t playlists-imersao-db .
+docker run -d --name playlists-db -p 5432:5432 playlists-imersao-db
+```
 
-   Abra o navegador e acesse:  
-   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+## Publicação e Integração
 
-   Aqui você pode testar todos os endpoints da API de forma interativa.
+Após subir o banco de dados, você pode conectar aplicações externas utilizando as credenciais e portas configuradas (consulte o `docker-compose.yml` para detalhes).
 
----
+Se desejar expor o banco para uso em outro projeto, basta fornecer as informações de conexão conforme configurado.
 
 ## Estrutura do Projeto
 
-- `app.py`: Arquivo principal da aplicação FastAPI.
-- `models.py`: Modelo da tabela `playlists` (SQLAlchemy).
-- `schemas.py`: Schemas de validação de dados para playlists (Pydantic).
-- `database.py`: Configuração do banco de dados SQLite.
-- `routers/playlists.py`: Arquivo com as rotas (endpoints) para o CRUD de playlists.
-- `requirements.txt`: Lista de dependências do projeto.
+- `Dockerfile` - Define a imagem Docker do banco de dados.
+- `docker-compose.yml` - Orquestra os containers necessários.
+- Scripts de inicialização e configuração do banco, se aplicável.
+
+## Créditos
+
+Adaptação baseada na Imersão CloudDevOps da [Alura](https://www.alura.com.br/) em parceria com o Google.
 
 ---
 
-- O banco de dados SQLite será criado automaticamente como `playlist.db` na primeira execução.
-- Para reiniciar o banco, basta apagar o arquivo `playlist.db` (isso apagará todos os dados).
+Sinta-se à vontade para contribuir ou sugerir melhorias!
 
 ---
+
+Beatriz Santos, 2025
