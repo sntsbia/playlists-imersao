@@ -9,8 +9,8 @@ WORKDIR /app
 
 # Etapa 3: Variáveis de ambiente
 # Evita que o Python crie arquivos .pyc e garante que os logs sejam enviados diretamente para o console.
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE="1"
+ENV PYTHONUNBUFFERED="1"
 
 # Etapa 4: Copiar e instalar as dependências
 # Copiamos o requirements.txt primeiro para aproveitar o cache de camadas do Docker.
