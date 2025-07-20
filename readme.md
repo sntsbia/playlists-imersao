@@ -25,7 +25,7 @@ O repositório contém scripts e configurações para subir um banco de dados em
 2. Suba os containers com Docker Compose:
 
    ```bash
-   docker-compose up -d
+   docker compose up
    ```
 
    Isso irá criar e iniciar todos os serviços definidos no arquivo `docker-compose.yml`.
@@ -33,13 +33,13 @@ O repositório contém scripts e configurações para subir um banco de dados em
 3. Para acompanhar os logs dos containers:
 
    ```bash
-   docker-compose logs -f
+   docker compose logs -f
    ```
 
 4. Para parar e remover os containers, redes e volumes criados pelo Compose:
 
    ```bash
-   docker-compose down
+   docker compose down
    ```
 
 ### Usando apenas Docker
@@ -48,7 +48,7 @@ Se preferir rodar o banco de dados manualmente, utilize os comandos abaixo (ajus
 
 ```bash
 docker build -t playlists-imersao-db .
-docker run -d --name playlists-db -p 5432:5432 playlists-imersao-db
+docker run -d --name playlists-db -p 8000:8000 playlists-imersao-db
 ```
 
 ## Publicação e Integração
@@ -62,6 +62,10 @@ Se desejar expor o banco para uso em outro projeto, basta fornecer as informaç�
 - `Dockerfile` - Define a imagem Docker do banco de dados.
 - `docker-compose.yml` - Orquestra os containers necessários.
 - Scripts de inicialização e configuração do banco, se aplicável.
+
+## Observações
+
+- Para buildar e rodar o projeto, deve-se verificar se todas as permissões de leitura e escrita estão corretas.
 
 ## Créditos
 
